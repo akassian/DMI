@@ -1,4 +1,4 @@
-/** Database config for database. */
+/** Database config for api. */
 
 const { Client } = require('pg');
 const { DB_URI } = require('./config');

@@ -1,4 +1,8 @@
-const db = require('../db');
+/* REAL SQL DB */
+// const database = require('../db');
+
+/* FAKE UNPERSISTED DB */
+const database = require('../fakeDB');
 
 /** Collection of related methods for strings. */
 
@@ -10,12 +14,17 @@ class StringModel {
    * */
 
   static async findAll() {
-    const res = await db.query(
-      `SELECT text
-       FROM strings`,
-    );
+    /* VERSION USING REAL SQL DB */
 
-    return res.rows;
+    // const res = await db.query(
+    //   `SELECT id, text
+    //    FROM strings
+    //    ORDER BY id`,
+    // );
+    // return res.rows;
+
+    /* USING FAKE UNPERSISTED DB */
+    return database;
   }
 
   /* Create string in database from data, return string data:
@@ -23,14 +32,19 @@ class StringModel {
    */
 
   static async create(data) {
-    const res = await db.query(
-      `INSERT INTO strings (text)
-       VALUES ($1)
-       RETURNING text`,
-      [data],
-    );
+    /* VERSION USING REAL SQL DB */
 
-    return res.rows[0];
+    // const res = await db.query(
+    //   `INSERT INTO strings (text)
+    //    VALUES ($1)
+    //    RETURNING id, text`,
+    //   [data],
+    // );
+    // return res.rows[0];
+
+    /* USING FAKE UNPERSISTED DB */
+    database.unshift(data);
+    return data;
   }
 }
 

@@ -2,9 +2,9 @@ const express = require('express');
 const router = new express.Router();
 const StringModel = require('../models/stringModel');
 
-/** POST /   stringData => {string: newString}  */
+/** POST /strings {string} => {id, string}  */
 
-router.post('/strings', async function prepend(req, res, next) {
+router.post('/strings', async function insert(req, res, next) {
   try {
     const string = await StringModel.create(req.body.string || '');
     return res.status(201).json({ string });
@@ -13,7 +13,7 @@ router.post('/strings', async function prepend(req, res, next) {
   }
 });
 
-/** GET / => {strings: [string1, string2, ...]}  */
+/** GET /strings => {strings: [{id1, string1}, {id2, string2}, ...]}  */
 
 router.get('/strings', async function fetch(req, res, next) {
   try {

@@ -1,4 +1,4 @@
-/** Common config for bookstore. */
+/** Common config for api. */
 
 let DB_URI = `postgresql://`;
 
