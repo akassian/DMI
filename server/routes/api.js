@@ -4,7 +4,7 @@ const StringModel = require('../models/stringModel');
 
 /** POST /strings {string} => {id, string}  */
 
-router.post('/strings', async function insert(req, res, next) {
+router.post('/strings', async function prepend(req, res, next) {
   try {
     const string = await StringModel.create(req.body.string || '');
     return res.status(201).json({ string });
