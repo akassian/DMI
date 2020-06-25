@@ -2,7 +2,7 @@ const express = require('express');
 const router = new express.Router();
 const StringModel = require('../models/stringModel');
 
-/** POST /strings {string} => {id, string}  */
+/** POST /strings {string} => {string}  */
 
 router.post('/strings', async function prepend(req, res, next) {
   try {
@@ -13,7 +13,7 @@ router.post('/strings', async function prepend(req, res, next) {
   }
 });
 
-/** GET /strings => {strings: [{id1, string1}, {id2, string2}, ...]}  */
+/** GET /strings => {strings: [string1, string2, ...]}  */
 
 router.get('/strings', async function fetch(req, res, next) {
   try {

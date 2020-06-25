@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 /**
- * getStrings
+ * sends GET request to /api/strings
  *
  * returns => {
- *  strings: [{array of string data}]
+ *  strings: [string1, string2, ...]
  * }
  */
 const getStrings = async () => {
@@ -15,4 +15,19 @@ const getStrings = async () => {
   return res;
 };
 
-export { getStrings };
+/*
+ * sends POST request to /api/strings
+ *
+ * returns => {string}
+ */
+
+const addString = async formData => {
+  const res = await axios({
+    url: `/api/strings`,
+    method: 'POST',
+    data: { string: formData },
+  });
+  return res;
+};
+
+export { getStrings, addString };

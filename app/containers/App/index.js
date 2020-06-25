@@ -17,6 +17,7 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 // import Header from 'components/Header';
 // import Footer from 'components/Footer';
 import Home from '../Home';
+import AddStringForm from '../AddStringForm';
 
 import GlobalStyle from '../../global-styles';
 
@@ -41,6 +42,7 @@ export default function App() {
       {/* <Header /> */}
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/new" component={AddStringForm} />
         <Route path="/features" component={FeaturePage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
