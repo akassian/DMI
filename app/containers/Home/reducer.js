@@ -8,11 +8,17 @@
  */
 
 import produce from 'immer';
-import { FETCH_STRINGS } from './constants';
+import {
+  FETCH_STRINGS,
+  FETCH_STRINGS_SUCCESS,
+  FETCH_STRINGS_ERROR,
+} from './constants';
 
-// The initial state of the App
+// The initial state of the strings
 export const initialState = {
-  strings: [],
+  loading: false,
+  error: false,
+  strings: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -20,7 +26,19 @@ const homeReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case FETCH_STRINGS:
+        draft.loading = true;
+        draft.error = false;
+        draft.strings = false;
+        break;
+
+      case FETCH_STRINGS_SUCCESS:
+        draft.loading = false;
         draft.strings = action.strings;
+        break;
+
+      case FETCH_STRINGS_ERROR:
+        draft.error = action.error;
+        draft.loading = false;
         break;
     }
   });

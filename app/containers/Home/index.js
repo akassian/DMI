@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import { makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import { fetchStrings } from './actions';
 import { makeSelectStrings } from './selectors';
 import Form from '../HomePage/Form';
@@ -16,8 +17,10 @@ import saga from './saga';
 
 const key = 'home';
 
-export function Home({ strings, dispatchStrings }) {
+export function Home({ strings, loading, error, dispatchStrings }) {
   console.log('STRINGS in home', strings);
+  console.log('loading in home', loading);
+  console.log('error in home', error);
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   useEffect(() => {
@@ -57,12 +60,16 @@ export function Home({ strings, dispatchStrings }) {
 }
 
 Home.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   strings: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   dispatchStrings: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   strings: makeSelectStrings(),
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
 });
 
 export function mapDispatchToProps(dispatch) {

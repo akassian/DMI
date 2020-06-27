@@ -5,7 +5,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
 import { FETCH_STRINGS } from './constants';
-import { fetchStrings } from './actions';
+import { stringsFetched, stringsFetchError } from './actions';
 
 /**
  * Backend request/response handler to get strings array
@@ -17,10 +17,9 @@ export function* getStrings() {
     // Call our request helper (see 'utils/request')
     const { strings } = yield call(request, requestURL);
     console.log('Strings in saga.js of home', strings);
-    yield put(fetchStrings(strings));
+    yield put(stringsFetched(strings));
   } catch (err) {
-    // TODO: handle error properly with custom action
-    console.log(err);
+    yield put(stringsFetchError(err));
   }
 }
 
