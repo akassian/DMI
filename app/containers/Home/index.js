@@ -27,6 +27,7 @@ export function Home({ strings, loading, error, dispatchStrings }) {
   console.log('STRINGS in home', strings);
   console.log('loading in home', loading);
   console.log('error in home', error);
+
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
   useEffect(() => {
