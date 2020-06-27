@@ -19,7 +19,7 @@ router.post('/strings', async function prepend(req, res, next) {
 router.get('/strings', async function fetch(req, res, next) {
   try {
     const strings = await StringModel.findAll();
-    throw new ExpressError('Unauthorized', 400);
+    // throw new ExpressError('Unauthorized', 400);
     return res.json({ strings });
   } catch (err) {
     console.log('NEXT');

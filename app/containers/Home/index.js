@@ -1,5 +1,5 @@
 import React, { useEffect, memo } from 'react';
-// import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid';
 // import { getStrings } from '../../api/strings';
 // import useApi from '../../hooks/useApi';
 import PropTypes from 'prop-types';
@@ -8,9 +8,15 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { makeSelectLoading, makeSelectError } from 'containers/App/selectors';
+import List from 'components/List';
+import ListItem from 'components/ListItem';
+import LoadingIndicator from 'components/LoadingIndicator';
+import {
+  makeSelectStrings,
+  makeSelectLoading,
+  makeSelectError,
+} from './selectors';
 import { fetchStrings } from './actions';
-import { makeSelectStrings } from './selectors';
 import Form from '../HomePage/Form';
 import reducer from './reducer';
 import saga from './saga';
@@ -26,6 +32,18 @@ export function Home({ strings, loading, error, dispatchStrings }) {
   useEffect(() => {
     dispatchStrings();
   }, []);
+
+  let allStrings;
+  if (loading) {
+    allStrings = <List component={LoadingIndicator} />;
+  }
+
+  if (error !== false) {
+    const ErrorComponent = () => (
+      <ListItem item="Something went wrong, please try again!" />
+    );
+    allStrings = <List component={ErrorComponent} />;
+  }
 
   // const [isLoading, errors, data] = useApi(getStrings);
   // console.log(isLoading, errors, data);
@@ -43,15 +61,18 @@ export function Home({ strings, loading, error, dispatchStrings }) {
   // if (isLoading) return <h1>Loading...</h1>;
 
   // const allStrings = data.strings.map(string => <li key={uuid()}>{string}</li>);
-  let allStrings;
-  // if (strings !== undefined) {
-  //   allStrings = strings.strings.map(string => <li key={uuid()}>{string}</li>);
+  // if (strings !== false) {
+  //   allStrings = strings.map(string => <li key={uuid()}>{string}</li>);
   // }
+
+  if (strings !== false) {
+    allStrings = <List items={strings} component={ListItem} />;
+  }
 
   return (
     <>
       <h1>Strings</h1>
-      <ul>{allStrings}</ul>
+      {allStrings}
       <Form onSubmit={dispatchStrings}>
         <button type="submit">Submit</button>
       </Form>
