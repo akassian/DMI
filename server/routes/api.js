@@ -7,6 +7,7 @@ const ExpressError = require('../middlewares/expressError.js');
 
 router.post('/strings', async function prepend(req, res, next) {
   try {
+    console.log('req.body', req.body);
     const string = await StringModel.create(req.body.string || '');
     return res.status(201).json({ string });
   } catch (err) {

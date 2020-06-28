@@ -1,5 +1,5 @@
 import React, { useEffect, memo } from 'react';
-import { v4 as uuid } from 'uuid';
+// import { v4 as uuid } from 'uuid';
 // import { getStrings } from '../../api/strings';
 // import useApi from '../../hooks/useApi';
 import PropTypes from 'prop-types';
