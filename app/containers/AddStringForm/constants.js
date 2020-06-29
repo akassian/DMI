@@ -1,5 +1,5 @@
 /*
- * AddStringFormConstants
+ * AddStringForm Constants
  * Each action has a corresponding type, which the reducer knows and picks up on.
  * To avoid weird typos between the reducer and the actions, we save them as
  * constants here. We prefix them with 'yourproject/YourComponent' so we avoid
@@ -11,4 +11,6 @@
 
 export const CHANGE_STRING = 'boilerplate/AddStringForm/CHANGE_STRING';
 export const ADD_STRING = 'boilerplate/AddStringForm/ADD_STRING';
+export const ADD_STRING_SUCCESS =
+  'boilerplate/AddStringForm/ADD_STRING_SUCCESS';
 export const ADD_STRING_ERROR = 'boilerplate/AddStringForm/ADD_STRING_ERROR';

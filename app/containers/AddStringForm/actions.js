@@ -15,14 +15,19 @@
  *    }
  */
 
-import { ADD_STRING, ADD_STRING_ERROR, CHANGE_STRING } from './constants';
+import {
+  CHANGE_STRING,
+  ADD_STRING,
+  ADD_STRING_SUCCESS,
+  ADD_STRING_ERROR,
+} from './constants';
 
 /**
- * Changes the input field of the form
+ * Changes the input field of the AddStringForm
  *
  * @param  {string} string The new text of the input field
  *
- * @return {object} An action object with a type of CHANGE_STRING
+ * @return {object}        An action object with a type of CHANGE_STRING
  */
 export function changeString(string) {
   return {
@@ -32,31 +37,29 @@ export function changeString(string) {
 }
 
 /**
- * Add the string, this action starts the request saga
+ * Add the string, THIS ACTION STARTS THE REQUEST SAGA
  *
  * @return {object} An action object with a type of ADD_STRING
  */
 export function addString() {
-  console.log('inside addString');
   return {
     type: ADD_STRING,
   };
 }
 
 /**
- * Dispatched when strings are added to backend
+ * Dispatched when string is successfully added to backend
  *
  * @param  {array} strings The strings array from backend
  *
- * @return {object}       An action object with a type of FETCH_STRINGS passing the strings array
+ * @return {object}       An action object with a type of ADD_STRING_SUCCESS
  */
-// export function stringsFetched(strings) {
-//   console.log('inside stringsFetched');
-//   return {
-//     type: FETCH_STRINGS_SUCCESS,
-//     strings,
-//   };
-// }
+
+export function stringAdded() {
+  return {
+    type: ADD_STRING_SUCCESS,
+  };
+}
 
 /**
  * Dispatched when adding string to backend fails

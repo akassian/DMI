@@ -13,4 +13,16 @@ const makeSelectString = () =>
     stringState => stringState.string,
   );
 
-export { selectString, makeSelectString };
+const makeSelectLoading = () =>
+  createSelector(
+    selectString,
+    stringState => stringState.loading,
+  );
+
+const makeSelectError = () =>
+  createSelector(
+    selectString,
+    stringState => stringState.error,
+  );
+
+export { selectString, makeSelectString, makeSelectLoading, makeSelectError };

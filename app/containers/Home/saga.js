@@ -1,5 +1,5 @@
 /**
- * Gets the repositories of the user from Github
+ * Gets the strings from backend db -> store
  */
 
 import { call, put, takeLatest } from 'redux-saga/effects';
@@ -8,7 +8,7 @@ import { FETCH_STRINGS } from './constants';
 import { stringsFetched, stringsFetchError } from './actions';
 
 /**
- * Backend request/response handler to get strings array
+ * Backend request / response handler to get strings array
  */
 export function* getStrings() {
   const requestURL = `http://localhost:3000/api/strings`;
@@ -16,7 +16,6 @@ export function* getStrings() {
   try {
     // Call our request helper (see 'utils/request')
     const { strings } = yield call(request, requestURL);
-    console.log('Strings in saga.js of home', strings);
     yield put(stringsFetched(strings));
   } catch (err) {
     yield put(stringsFetchError(err));

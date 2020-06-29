@@ -5,26 +5,24 @@ import {
 } from './constants';
 
 /**
- * Load the strings, this action starts the request saga
+ * Load the strings, THIS ACTION STARTS THE REQUEST SAGA
  *
  * @return {object} An action object with a type of FETCH_STRINGS
  */
 export function fetchStrings() {
-  console.log('inside fetchStrings');
   return {
     type: FETCH_STRINGS,
   };
 }
 
 /**
- * Dispatched when strings are fetched from backend
+ * Dispatched when strings are fetched from backend - DISPATCHED BY SAGA
  *
  * @param  {array} strings The strings array from backend
  *
- * @return {object}       An action object with a type of FETCH_STRINGS passing the strings array
+ * @return {object}        An action object with a type of FETCH_STRINGS passing the strings array
  */
 export function stringsFetched(strings) {
-  console.log('inside stringsFetched');
   return {
     type: FETCH_STRINGS_SUCCESS,
     strings,
@@ -36,7 +34,7 @@ export function stringsFetched(strings) {
  *
  * @param  {object} error The error
  *
- * @return {object}       An action object with a type of FETCH_STRINGS_ERROR passing the error
+ * @return {object}       An action object with a type of FETCH_STRINGS_ERROR, passing the error
  */
 export function stringsFetchError(error) {
   return {

@@ -1,5 +1,4 @@
 import React, { useEffect, memo } from 'react';
-// import { v4 as uuid } from 'uuid';
 // import { getStrings } from '../../api/strings';
 // import useApi from '../../hooks/useApi';
 import { withRouter } from 'react-router-dom';
@@ -18,27 +17,28 @@ import {
   makeSelectError,
 } from './selectors';
 import { fetchStrings } from './actions';
-// import Form from '../HomePage/Form';
 import reducer from './reducer';
 import saga from './saga';
 
 const key = 'home';
 
-export function Home({ history, strings, loading, error, dispatchStrings }) {
-  // console.log('STRINGS in home', strings);
-  // console.log('loading in home', loading);
-  // console.log('error in home', error);
-
+export function Home({
+  history,
+  strings,
+  loading,
+  error,
+  dispatchFetchStrings,
+}) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   /* Fetch Strings on load - dispatch saga */
   useEffect(() => {
-    dispatchStrings();
+    dispatchFetchStrings();
   }, []);
 
   /* Strings container */
-  let allStrings;
+  let allStrings = null;
 
   /* Loading indicator for fetching Strings - shown in Strings container */
   if (loading) {
@@ -48,9 +48,18 @@ export function Home({ history, strings, loading, error, dispatchStrings }) {
   /* Error msg for fetching Strings - shown in Strings container */
   if (error !== false) {
     const ErrorComponent = () => (
-      <ListItem item="Something went wrong, please try again!" />
+      <ListItem
+        item={`${error.message} - Something went wrong, please try again!`}
+      />
     );
-    allStrings = <List component={ErrorComponent} />;
+    allStrings = (
+      <>
+        <List component={ErrorComponent} />
+        <button type="button" onClick={dispatchFetchStrings}>
+          Refresh
+        </button>
+      </>
+    );
   }
 
   /* Load fetched strings into allStrings container */
@@ -64,7 +73,7 @@ export function Home({ history, strings, loading, error, dispatchStrings }) {
 
       {/* Button to refresh - not really needed but uncomment if desired */}
 
-      {/* <button type="button" onClick={dispatchStrings}>
+      {/* <button type="button" onClick={dispatchFetchStrings}>
         Refresh
       </button> */}
 
@@ -83,7 +92,7 @@ Home.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   strings: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  dispatchStrings: PropTypes.func,
+  dispatchFetchStrings: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -94,9 +103,8 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    dispatchStrings: evt => {
+    dispatchFetchStrings: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      // console.log('inside dispatchStrings');
       dispatch(fetchStrings());
     },
   };

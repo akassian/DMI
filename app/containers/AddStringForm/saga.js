@@ -1,15 +1,15 @@
 /**
- * Gets the repositories of the user from Github
+ * POSTs the string from the form to the backend db
  */
 
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import request from 'utils/request';
 import { ADD_STRING } from './constants';
-import { stringAddError } from './actions';
+import { stringAdded, stringAddError } from './actions';
 import { makeSelectString } from './selectors';
 
 /**
- * Backend request/response handler to get strings array
+ * Backend request / response handler to POST string to backend db array
  */
 export function* addString() {
   const requestURL = `http://localhost:3000/api/strings`;
@@ -17,16 +17,15 @@ export function* addString() {
   try {
     const string = yield select(makeSelectString());
     const body = JSON.stringify({ string });
-    console.log('body', body);
+
     // Call our request helper (see 'utils/request')
-    const res = yield call(request, requestURL, {
+    yield call(request, requestURL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body,
     });
-    console.log('res', res);
-    // console.log('Strings in saga.js of home', strings);
-    // yield put(stringAdded(strings));
+    /* Dispatch to signal that string was added successfully */
+    yield put(stringAdded());
   } catch (err) {
     yield put(stringAddError(err));
   }

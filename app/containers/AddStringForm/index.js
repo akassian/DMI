@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -6,9 +6,15 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import List from 'components/List';
+import ListItem from 'components/ListItem';
+import LoadingIndicator from 'components/LoadingIndicator';
 import Form from './Form';
-// import Input from './Input';
-import { makeSelectString } from './selectors';
+import {
+  makeSelectString,
+  makeSelectLoading,
+  makeSelectError,
+} from './selectors';
 import { addString, changeString } from './actions';
 import reducer from './reducer';
 import saga from './saga';
@@ -18,63 +24,110 @@ const key = 'addStringForm';
 function AddStringForm({
   history,
   string,
+  loading,
+  error,
   onChangeString,
   onSubmitString,
-  onCancelString,
+  dispatchClearString,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
+  /* Local state for keeping track of user attempt to submit
+  - for submission logic */
+  const [submitted, setSubmitted] = useState(false);
+
+  /* Alert message container */
+  const [alert, setAlert] = useState(null);
+
+  /* Submission logic for displaying loading, error, or redirecting */
+  useEffect(() => {
+    if (submitted) {
+      /* Loading case */
+      if (loading === true) {
+        setAlert(<List component={LoadingIndicator} />);
+      }
+
+      /* Error case */
+      if (error !== false) {
+        /* Reset submitted to allow attempting a resubmit */
+        setSubmitted(false);
+        const ErrorComponent = () => (
+          <ListItem
+            item={`${error.message} - Something went wrong, please try again!`}
+          />
+        );
+        setAlert(<List component={ErrorComponent} />);
+      }
+
+      /* Success - redirect case */
+      if (error === false && loading === false) {
+        setSubmitted(false);
+        /* Clear form by changing string to empty */
+        dispatchClearString();
+        history.push('/');
+      }
+    }
+  }, [submitted, error, loading]);
+
   const onSubmitForm = evt => {
     /* Dispatches addString (POST request) */
     onSubmitString(evt);
-    /* Send the client back to the home page */
-    history.push('/');
+    /* Go to submission logic useEffect */
+    setSubmitted(true);
   };
 
   const onCancelForm = () => {
+    setSubmitted(false);
     /* Clear form by dispatch - changing string to empty */
-    onCancelString();
+    dispatchClearString();
     /* Send the client back to the home page */
     history.push('/');
   };
 
   return (
-    <Form onSubmit={onSubmitForm}>
-      <div>
-        <label htmlFor="string">Text:</label>
-      </div>
+    <>
+      {alert}
+      <Form onSubmit={onSubmitForm}>
+        <div>
+          <label htmlFor="string">Text:</label>
+        </div>
 
-      <textarea
-        id="string"
-        value={string}
-        onChange={onChangeString}
-        rows="4"
-        cols="50"
-        required
-      />
+        <textarea
+          id="string"
+          value={string}
+          onChange={onChangeString}
+          rows="4"
+          cols="50"
+          required
+        />
 
-      <div>
-        <input type="submit" />
-        <button type="button" onClick={onCancelForm}>
-          Cancel
-        </button>
-      </div>
-    </Form>
+        <div>
+          <input type="submit" />
+          <button type="button" onClick={onCancelForm}>
+            Cancel
+          </button>
+        </div>
+      </Form>
+    </>
   );
 }
 
 /* Prop type validation */
 AddStringForm.propTypes = {
   history: PropTypes.object,
+  string: PropTypes.string,
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onSubmitString: PropTypes.func,
   onChangeString: PropTypes.func,
-  onCancelString: PropTypes.func,
-  string: PropTypes.string,
+  dispatchClearString: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   string: makeSelectString(),
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -84,10 +137,8 @@ export function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       /* POST request - add string to db */
       dispatch(addString());
-      /* Clear form by changing string to empty */
-      dispatch(changeString());
     },
-    onCancelString: () =>
+    dispatchClearString: () =>
       /* Clear form by changing string to empty */
       dispatch(changeString()),
   };

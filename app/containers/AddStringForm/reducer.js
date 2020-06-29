@@ -8,11 +8,17 @@
  */
 
 import produce from 'immer';
-import { CHANGE_STRING } from './constants';
+import {
+  CHANGE_STRING,
+  ADD_STRING,
+  ADD_STRING_SUCCESS,
+  ADD_STRING_ERROR,
+} from './constants';
 
 // The initial state of the App
 export const initialState = {
   string: '',
+  loading: false,
   error: false,
 };
 
@@ -22,6 +28,21 @@ const addStringFormReducer = (state = initialState, action) =>
     switch (action.type) {
       case CHANGE_STRING:
         draft.string = action.string;
+        break;
+
+      case ADD_STRING:
+        draft.loading = true;
+        draft.error = false;
+        break;
+
+      case ADD_STRING_SUCCESS:
+        draft.loading = false;
+        draft.error = false;
+        break;
+
+      case ADD_STRING_ERROR:
+        draft.loading = false;
+        draft.error = action.error;
         break;
     }
   });

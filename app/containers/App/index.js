@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
 // import HomePage from 'containers/HomePage/Loadable';
-import FeaturePage from 'containers/FeaturePage/Loadable';
+// import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 // import Header from 'components/Header';
 // import Footer from 'components/Footer';
@@ -35,7 +35,7 @@ export default function App() {
     <AppWrapper>
       <Helmet
         titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
+        defaultTitle="DMI Challenge - React.js Boilerplate"
       >
         <meta name="description" content="A React.js Boilerplate application" />
       </Helmet>
@@ -43,7 +43,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/new" component={AddStringForm} />
-        <Route path="/features" component={FeaturePage} />
+        {/* <Route path="/features" component={FeaturePage} /> */}
         <Route path="" component={NotFoundPage} />
       </Switch>
       {/* <Footer /> */}

@@ -12,7 +12,9 @@ function List(props) {
   // If we have items, render them
   if (props.items) {
     content = props.items.map(item => (
+      /* Original code key method */
       // <ComponentToRender key={`item-${item.id}`} item={item} />
+      /* Replaced with uuid */
       <ComponentToRender key={uuid()} item={item} />
     ));
   } else {

@@ -1,13 +1,15 @@
 const express = require('express');
 const router = new express.Router();
 const StringModel = require('../models/stringModel');
-const ExpressError = require('../middlewares/expressError.js');
+/* To manually test backend error cases on frontend */
+// const ExpressError = require('../middlewares/expressError.js');
 
 /** POST /strings {string} => {string}  */
 
 router.post('/strings', async function prepend(req, res, next) {
   try {
-    console.log('req.body', req.body);
+    /* To manually test randomized backend error cases on frontend */
+    // if (Math.random() > 0.5) throw new ExpressError('Test error', 400);
     const string = await StringModel.create(req.body.string || '');
     return res.status(201).json({ string });
   } catch (err) {
@@ -19,11 +21,11 @@ router.post('/strings', async function prepend(req, res, next) {
 
 router.get('/strings', async function fetch(req, res, next) {
   try {
+    /* To manually test randomized backend error cases on frontend */
+    // if (Math.random() > 0.75) throw new ExpressError('Test error', 400);
     const strings = await StringModel.findAll();
-    // throw new ExpressError('Unauthorized', 400);
     return res.json({ strings });
   } catch (err) {
-    console.log('NEXT');
     return next(err);
   }
 });
