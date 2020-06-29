@@ -2,6 +2,7 @@ import React, { useEffect, memo } from 'react';
 // import { v4 as uuid } from 'uuid';
 // import { getStrings } from '../../api/strings';
 // import useApi from '../../hooks/useApi';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -17,28 +18,34 @@ import {
   makeSelectError,
 } from './selectors';
 import { fetchStrings } from './actions';
-import Form from '../HomePage/Form';
+// import Form from '../HomePage/Form';
 import reducer from './reducer';
 import saga from './saga';
 
 const key = 'home';
 
-export function Home({ strings, loading, error, dispatchStrings }) {
-  console.log('STRINGS in home', strings);
-  console.log('loading in home', loading);
-  console.log('error in home', error);
+export function Home({ history, strings, loading, error, dispatchStrings }) {
+  // console.log('STRINGS in home', strings);
+  // console.log('loading in home', loading);
+  // console.log('error in home', error);
 
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+
+  /* Fetch Strings on load - dispatch saga */
   useEffect(() => {
     dispatchStrings();
   }, []);
 
+  /* Strings container */
   let allStrings;
+
+  /* Loading indicator for fetching Strings - shown in Strings container */
   if (loading) {
     allStrings = <List component={LoadingIndicator} />;
   }
 
+  /* Error msg for fetching Strings - shown in Strings container */
   if (error !== false) {
     const ErrorComponent = () => (
       <ListItem item="Something went wrong, please try again!" />
@@ -46,26 +53,7 @@ export function Home({ strings, loading, error, dispatchStrings }) {
     allStrings = <List component={ErrorComponent} />;
   }
 
-  // const [isLoading, errors, data] = useApi(getStrings);
-  // console.log(isLoading, errors, data);
-
-  // const [data, setData] = useState(null);
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const res = await getStrings();
-  //     console.log(res);
-  //     setData(res);
-  //   };
-  //   getData();
-  // }, []);
-
-  // if (isLoading) return <h1>Loading...</h1>;
-
-  // const allStrings = data.strings.map(string => <li key={uuid()}>{string}</li>);
-  // if (strings !== false) {
-  //   allStrings = strings.map(string => <li key={uuid()}>{string}</li>);
-  // }
-
+  /* Load fetched strings into allStrings container */
   if (strings !== false) {
     allStrings = <List items={strings} component={ListItem} />;
   }
@@ -73,15 +61,25 @@ export function Home({ strings, loading, error, dispatchStrings }) {
   return (
     <>
       <h1>Strings</h1>
+
+      {/* Button to refresh - not really needed but uncomment if desired */}
+
+      {/* <button type="button" onClick={dispatchStrings}>
+        Refresh
+      </button> */}
+
+      <button type="button" onClick={() => history.push('/new')}>
+        Add
+      </button>
+
       {allStrings}
-      <Form onSubmit={dispatchStrings}>
-        <button type="submit">Submit</button>
-      </Form>
     </>
   );
 }
 
+/* Prop type validation */
 Home.propTypes = {
+  history: PropTypes.object,
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   strings: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
@@ -98,7 +96,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     dispatchStrings: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      console.log('inside dispatchStrings');
+      // console.log('inside dispatchStrings');
       dispatch(fetchStrings());
     },
   };
@@ -109,7 +107,9 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(
-  withConnect,
-  memo,
-)(Home);
+export default withRouter(
+  compose(
+    withConnect,
+    memo,
+  )(Home),
+);

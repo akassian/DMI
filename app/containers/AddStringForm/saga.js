@@ -19,7 +19,7 @@ export function* addString() {
     const body = JSON.stringify({ string });
     console.log('body', body);
     // Call our request helper (see 'utils/request')
-    let res = yield call(request, requestURL, {
+    const res = yield call(request, requestURL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body,
