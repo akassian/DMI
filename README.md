@@ -1,12 +1,5 @@
 # DMI Challenge - Andrei Kassiantchouk
 
-## Installations (OSX)
-
-```sh
-# install JavaScript dependencies
-npm i
-```
-
 ## Used Packages / Libraries
 
 - React Router
@@ -15,6 +8,28 @@ npm i
 - Reselect
 - Styled Components
 - Jest
+
+## Installations (OSX)
+
+```sh
+# install JavaScript dependencies
+npm i
+```
+
+## Tests (OSX)
+
+```sh
+# To run only the tests I've written:
+
+# Test suite for Home container
+jest app/containers/Home/tests/index.test.js
+
+# Test suite for AddStringForm container
+jest app/containers/AddStringForm/tests/index.test.js
+
+# To run all tests - including those provided with boilerplate:
+npm test
+```
 
 ## Route Structure
 
@@ -66,21 +81,6 @@ npm i
     - Design a component per row that has horizontal scrolling
     - Less scalable: make rows taller to catch overflow
 - `AddStringForm` and `Home` containers could use more testing (on saga, actions, etc.)
-
-## Tests (OSX)
-
-```sh
-# To run only the tests I've written:
-
-# Test suite for Home container
-jest app/containers/Home/tests/index.test.js
-
-# Test suite for AddStringForm container
-jest app/containers/AddStringForm/tests/index.test.js
-
-# To run all tests - including those provided with boilerplate:
-npm test
-```
 
 <img src="https://raw.githubusercontent.com/react-boilerplate/react-boilerplate-brand/master/assets/banner-metal-optimized.jpg" alt="react boilerplate banner" align="center" />
 
