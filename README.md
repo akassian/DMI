@@ -66,7 +66,7 @@ npm test
     - expressError (`../middlewares/expressError`) - expressError object for easily throwing errors for manual testing
       - fakeDB (`../fakeDB`) - global array for simple, unpersisted simulated database
 
-## Known Issues / Potential Improvements
+## Potential Improvements
 
 - Can remove a bunch of boilerplate unused files/folders/components/tests (need to be careful with dependencies)
 - Backend routes folder structure could be better structured for scalability i.e.:
