@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddStringForm /> should render and match the snapshot 1`] = `
+<form
+  class="Form-x91grh-0 kGLYhq"
+>
+  <div>
+    <label
+      for="string"
+    >
+      Text:
+    </label>
+  </div>
+  <textarea
+    cols="50"
+    id="string"
+    required=""
+    rows="4"
+  />
+  <div>
+    <input
+      type="submit"
+    />
+    <button
+      type="button"
+    >
+      Cancel
+    </button>
+  </div>
+</form>
+`;

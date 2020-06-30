@@ -1,6 +1,4 @@
 import React, { useEffect, memo } from 'react';
-// import { getStrings } from '../../api/strings';
-// import useApi from '../../hooks/useApi';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

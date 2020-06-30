@@ -1,3 +1,87 @@
+# DMI Challenge - Andrei Kassiantchouk
+
+## Installations (OSX)
+
+```sh
+# install JavaScript dependencies
+npm i
+```
+
+## Used Packages / Libraries
+
+- React Router
+- Redux
+- Redux Saga
+- Reselect
+- Styled Components
+- Jest
+
+## Route Structure
+
+- Home (`/`) - displays all strings in backend fakeDB array
+
+  - AddStringForm (`/new`) - form to add new string to backend fakeDB array
+
+- API (`/api`)
+  - Strings (`/strings`)
+    - `GET` - gets all strings in our fake db
+      - Returns `{strings: [string1, string2, ...]}`
+    - `POST` - posts a string to our fake db in prepend form,
+      returns posted string if successfully posted
+      - `{string} => {string}`
+
+## Frontend Container / Component Hierarchy (`app/containers`)
+
+- App (`./App`) - routes to _Loadable_ of child containers
+  - Home (`./Home`)
+    - List (`app/components/List`) to contain / display strings
+    - ListItem (`app/components/ListItem`) for items in List
+    - LoadingIndicator (`app/components/LoadingIndicator`) to visualize load
+  - AddStringForm (`./AddStringForm`)
+    - List (`app/components/List`) to contain / display error & load alerts
+    - ListItem (`app/components/ListItem`) for items in List
+    - LoadingIndicator (`app/components/LoadingIndicator`) to visualize load
+    - Form (`./Form`) - styled component for form
+
+## Backend Hierarchy (`app/server`)
+
+- index (`./index`)
+  - api (`./routes/api`) - GET & POST routes @ 'api/strings'
+    - stringModel (`../models/stringModel`) - model for our String object for database methods
+    - expressError (`../middlewares/expressError`) - expressError object for easily throwing errors for manual testing
+      - fakeDB (`../fakeDB`) - global array for simple, unpersisted simulated database
+
+## Known Issues / Potential Improvements
+
+- Can remove a bunch of boilerplate unused files/folders/components/tests (need to be careful with dependencies)
+- Backend routes folder structure could be better structured for scalability i.e.:
+  - `routes/api/strings`
+- Can remove axios from npm installs (no longer used)
+- Can specify / limit string length on backend and frontend
+  - In SQL provide a max length
+  - On frontend use JSON schema for more tamper proof length restrictions
+    - Or simply length restriction on input field (not tamper proof)
+- On the frontend, displaying a really large string is visually buggy (overflows rows)
+  - Possible solutions:
+    - Design a component per row that has horizontal scrolling
+    - Less scalable: make rows taller to catch overflow
+- `AddStringForm` and `Home` containers could use more testing (on saga, actions, etc.)
+
+## Tests (OSX)
+
+```sh
+# To run only the tests I've written:
+
+# Test suite for Home container
+jest app/containers/Home/tests/index.test.js
+
+# Test suite for AddStringForm container
+jest app/containers/AddStringForm/tests/index.test.js
+
+# To run all tests - including those provided with boilerplate:
+npm test
+```
+
 <img src="https://raw.githubusercontent.com/react-boilerplate/react-boilerplate-brand/master/assets/banner-metal-optimized.jpg" alt="react boilerplate banner" align="center" />
 
 <br />
@@ -133,7 +217,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-
 
 ## Supporters
 

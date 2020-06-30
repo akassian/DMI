@@ -21,7 +21,7 @@ import saga from './saga';
 
 const key = 'addStringForm';
 
-function AddStringForm({
+export function AddStringForm({
   history,
   string,
   loading,
@@ -60,7 +60,7 @@ function AddStringForm({
         setAlert(<List component={ErrorComponent} />);
       }
 
-      /* Success - redirect case */
+      /* POST Success - redirect case */
       if (error === false && loading === false) {
         setSubmitted(false);
         /* Clear form by changing string to empty */
